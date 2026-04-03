@@ -1,0 +1,41 @@
+# 微信开发者工具相关
+.DS_Store
+*.log
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+.settings/
+
+# 微信小程序特定文件
+.project
+*.localstorage
+*.wxdevtools
+node_modules/
+miniprogram_npm/
+
+# 依赖和构建产物
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+dist/
+build/
+*.tmp
+
+# 敏感信息
+*.pem
+*.key
+*.crt
+.env
+.env.local
+.env.*.local
+
+# 系统文件
+Thumbs.db
+desktop.ini
+
+# 临时文件
+*.tmp
+*.temp
+.cache/
