@@ -85,6 +85,7 @@ export interface AppState {
   totalScores: ScoreMap
   playerNames: PlayerNameTuple
   currentRound: CurrentRoundState | null
+  lastCompletedRound: CurrentRoundState | null
   defaultConfig: RoundConfig
 }
 
@@ -120,4 +121,3 @@ export interface HuFormValue {
   baseFan: number
   genCount: number
 }
-

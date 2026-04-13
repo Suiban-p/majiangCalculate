@@ -33,12 +33,13 @@
   - 共享组件与胡牌 modal 骨架
 
 ## 当前状态
-- 当前业务代码处于“基础层已建立，页面层与组件层骨架已建立”的状态。
+- 当前业务代码处于“Phase 3 业务闭环进行中”的状态。
 - `miniprogram/types`、`miniprogram/constants`、`miniprogram/utils` 已有 Phase 1 实现。
 - `miniprogram/pages/home`、`miniprogram/pages/round-entry`、`miniprogram/pages/round-confirm` 已建立。
 - `miniprogram/components/scoreboard`、`rule-config-panel`、`settlement-list`、`action-buttons`、`round-status`、`score-summary`、`hu-form` 已建立。
 - `/docs` 文档体系已建立。
 - 首页、结果录入页、确认页、共享组件骨架已实现。
+- 杠牌登记、查大叫录入、确认后的下一步流程已接入主流程。
 
 ## 已知问题
 - 全量 `tsc --noEmit` 当前无法完全通过。
@@ -53,11 +54,10 @@
 
 ## 未完成事项
 - Phase 3 业务闭环：
-  - 杠牌登记逻辑
-  - 查大叫录入与结算
   - 血流成河 V1 细节补全
   - 一炮多响的完整表单与结算体验
   - 更完整的撤销和回滚细节
+  - 首页“临时修改玩家名”与持久化策略收口
 - Phase 4 视觉对齐与边界处理
   - Stitch 风格精修
   - 页面状态反馈

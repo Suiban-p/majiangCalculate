@@ -43,4 +43,17 @@
     bind:cancel="closeHuForm"
     bind:confirm="handleHuConfirm"
   />
+  <gang-form
+    visible="{{gangFormVisible}}"
+    config="{{currentRound ? currentRound.config : null}}"
+    playerNames="{{playerNames}}"
+    bind:cancel="closeGangForm"
+    bind:confirm="handleGangConfirm"
+  />
+  <chadajiao-form
+    visible="{{chadajiaoFormVisible}}"
+    playerNames="{{playerNames}}"
+    bind:cancel="closeChaDaJiaoForm"
+    bind:confirm="handleChaDaJiaoConfirm"
+  />
 </view>

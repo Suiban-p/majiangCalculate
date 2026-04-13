@@ -1,0 +1,40 @@
+<view wx:if="{{visible}}" class="modal">
+  <view class="modal__mask" bindtap="handleCancel"></view>
+  <view class="modal__panel">
+    <text class="modal__title">杠牌登记</text>
+
+    <view class="modal__section">
+      <text class="modal__label">杠牌类型</text>
+      <view class="chip-row">
+        <view class="chip {{formValue.gangType === 'an' ? 'chip--active' : ''}}" data-value="an" bindtap="setGangType">暗杠</view>
+        <view class="chip {{formValue.gangType === 'ming' ? 'chip--active' : ''}}" data-value="ming" bindtap="setGangType">明杠</view>
+        <view class="chip {{formValue.gangType === 'jia' ? 'chip--active' : ''}}" data-value="jia" bindtap="setGangType">加杠</view>
+      </view>
+    </view>
+
+    <view class="modal__section">
+      <text class="modal__label">杠牌人</text>
+      <view class="chip-row">
+        <block wx:for="{{playerNames}}" wx:key="*this" wx:for-item="item">
+          <view class="chip {{formValue.winner === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="setWinner">{{item}}</view>
+        </block>
+      </view>
+    </view>
+
+    <view wx:if="{{formValue.gangType === 'ming'}}" class="modal__section">
+      <text class="modal__label">点杠人</text>
+      <view class="chip-row">
+        <block wx:for="{{playerNames}}" wx:key="*this" wx:for-item="item">
+          <view wx:if="{{item !== formValue.winner}}" class="chip {{formValue.loser === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="setLoser">{{item}}</view>
+        </block>
+      </view>
+    </view>
+
+    <view class="modal__preview">{{previewText}}</view>
+
+    <view class="modal__actions">
+      <button class="ghost-btn" bindtap="handleCancel">取消</button>
+      <button class="primary-btn" bindtap="handleConfirm">确认结算</button>
+    </view>
+  </view>
+</view>

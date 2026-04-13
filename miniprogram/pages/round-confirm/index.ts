@@ -1,5 +1,5 @@
 import { AppState, CurrentRoundState, PlayerNameTuple, ScoreMap } from '../../types/game'
-import { applyRoundToTotalScores } from '../../utils/app-state'
+import { applyRoundToTotalScores, restartSession, startNextRound } from '../../utils/app-state'
 
 const app = getApp<IAppOption>()
 
@@ -51,7 +51,27 @@ Page<RoundConfirmData>({
     }
 
     app.setState(applyRoundToTotalScores(app.globalData.state))
-    wx.showToast({ title: '已累加到总分', icon: 'success' })
-    wx.reLaunch({ url: '/pages/home/index' })
+    wx.showActionSheet({
+      itemList: ['下一局', '重开并保留总分', '重开并清空总分'],
+      success: (result) => {
+        if (result.tapIndex === 0) {
+          app.setState(startNextRound(app.globalData.state))
+          wx.reLaunch({ url: '/pages/round-entry/index' })
+          return
+        }
+
+        if (result.tapIndex === 1) {
+          app.setState(restartSession(app.globalData.state, false))
+          wx.reLaunch({ url: '/pages/home/index' })
+          return
+        }
+
+        app.setState(restartSession(app.globalData.state, true))
+        wx.reLaunch({ url: '/pages/home/index' })
+      },
+      fail: () => {
+        wx.reLaunch({ url: '/pages/home/index' })
+      },
+    })
   },
 })

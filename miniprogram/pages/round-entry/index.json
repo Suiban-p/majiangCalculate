@@ -6,6 +6,8 @@
     "action-buttons": "/components/action-buttons/index",
     "score-summary": "/components/score-summary/index",
     "settlement-list": "/components/settlement-list/index",
-    "hu-form": "/components/hu-form/index"
+    "hu-form": "/components/hu-form/index",
+    "gang-form": "/components/gang-form/index",
+    "chadajiao-form": "/components/chadajiao-form/index"
   }
 }

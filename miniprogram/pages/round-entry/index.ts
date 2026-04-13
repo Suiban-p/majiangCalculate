@@ -1,5 +1,13 @@
-import { AppState, CurrentRoundState, HuSettlement, PlayerNameTuple, ScoreMap } from '../../types/game'
-import { createHuSettlement } from '../../utils/score'
+import {
+  AppState,
+  ChaDaJiaoSettlement,
+  CurrentRoundState,
+  GangSettlement,
+  HuSettlement,
+  PlayerNameTuple,
+  ScoreMap,
+} from '../../types/game'
+import { createChaDaJiaoSettlement, createGangSettlement, createHuSettlement } from '../../utils/score'
 import { appendSettlement, recomputeRound, undoLastSettlement } from '../../utils/round'
 
 const app = getApp<IAppOption>()
@@ -13,6 +21,8 @@ interface RoundEntryData {
   remainingText: string
   extraText: string
   huFormVisible: boolean
+  gangFormVisible: boolean
+  chadajiaoFormVisible: boolean
   availableWinners: string[]
   availableLosers: string[]
 }
@@ -27,6 +37,8 @@ Page<RoundEntryData>({
     remainingText: '',
     extraText: '',
     huFormVisible: false,
+    gangFormVisible: false,
+    chadajiaoFormVisible: false,
     availableWinners: [],
     availableLosers: [],
   },
@@ -117,12 +129,68 @@ Page<RoundEntryData>({
 
     this.setData({ huFormVisible: false })
     this.syncFromState(app.globalData.state)
+    this.maybePromptRoundComplete(app.globalData.state.currentRound)
   },
   handleGangTap() {
-    wx.showToast({ title: '杠牌登记在 Phase 3 细化', icon: 'none' })
+    this.setData({ gangFormVisible: true })
   },
   handleChaDaJiaoTap() {
-    wx.showToast({ title: '查大叫在 Phase 3 细化', icon: 'none' })
+    this.setData({ chadajiaoFormVisible: true })
+  },
+  closeGangForm() {
+    this.setData({ gangFormVisible: false })
+  },
+  closeChaDaJiaoForm() {
+    this.setData({ chadajiaoFormVisible: false })
+  },
+  handleGangConfirm(event: WechatMiniprogram.CustomEvent<{
+    value: {
+      winner: string
+      loser: string
+      gangType: 'an' | 'ming' | 'jia'
+    }
+  }>) {
+    const currentRound = app.globalData.state.currentRound
+    if (!currentRound) {
+      return
+    }
+
+    const settlement: GangSettlement = createGangSettlement({
+      config: currentRound.config,
+      playerNames: app.globalData.state.playerNames,
+      winner: event.detail.value.winner,
+      loser: event.detail.value.gangType === 'ming' ? event.detail.value.loser : null,
+      gangType: event.detail.value.gangType,
+    })
+
+    app.setState({
+      ...app.globalData.state,
+      currentRound: appendSettlement(app.globalData.state.playerNames, currentRound, settlement),
+    })
+
+    this.setData({ gangFormVisible: false })
+    this.syncFromState(app.globalData.state)
+  },
+  handleChaDaJiaoConfirm(event: WechatMiniprogram.CustomEvent<{ tingPlayers: string[] }>) {
+    const currentRound = app.globalData.state.currentRound
+    if (!currentRound) {
+      return
+    }
+
+    const settlement: ChaDaJiaoSettlement = createChaDaJiaoSettlement({
+      config: currentRound.config,
+      playerNames: app.globalData.state.playerNames,
+      tingPlayers: event.detail.tingPlayers,
+    })
+
+    app.setState({
+      ...app.globalData.state,
+      currentRound: appendSettlement(app.globalData.state.playerNames, currentRound, settlement),
+    })
+
+    this.setData({ chadajiaoFormVisible: false })
+    this.syncFromState(app.globalData.state)
+    wx.navigateTo({ url: '/pages/round-confirm/index' })
   },
   handleUndo() {
     const currentRound = app.globalData.state.currentRound
@@ -161,5 +229,21 @@ Page<RoundEntryData>({
     }
 
     wx.navigateTo({ url: '/pages/round-confirm/index' })
+  },
+  maybePromptRoundComplete(round: CurrentRoundState | null) {
+    if (!round || round.status !== 'completed') {
+      return
+    }
+
+    wx.showModal({
+      title: '本局可结束',
+      content: '血战到底剩余人数小于等于 1，可进入本局确认页。',
+      confirmText: '去确认',
+      success: (result) => {
+        if (result.confirm) {
+          wx.navigateTo({ url: '/pages/round-confirm/index' })
+        }
+      },
+    })
   },
 })

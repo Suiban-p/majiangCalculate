@@ -1,0 +1,19 @@
+<view wx:if="{{visible}}" class="modal">
+  <view class="modal__mask" bindtap="handleCancel"></view>
+  <view class="modal__panel">
+    <text class="modal__title">查大叫</text>
+    <view class="modal__section">
+      <text class="modal__label">听牌玩家</text>
+      <view class="chip-row">
+        <block wx:for="{{playerNames}}" wx:key="*this" wx:for-item="item">
+          <view class="chip {{selectedPlayers.indexOf(item) !== -1 ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="togglePlayer">{{item}}</view>
+        </block>
+      </view>
+    </view>
+    <view class="modal__preview">规则：未听牌者向每位听牌者支付 1 番底分</view>
+    <view class="modal__actions">
+      <button class="ghost-btn" bindtap="handleCancel">取消</button>
+      <button class="primary-btn" bindtap="handleConfirm">确认结算</button>
+    </view>
+  </view>
+</view>

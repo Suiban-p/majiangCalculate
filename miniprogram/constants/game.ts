@@ -52,5 +52,6 @@ export const createDefaultAppState = (): AppState => ({
   totalScores: EMPTY_SCORE_MAP(DEFAULT_PLAYER_NAMES),
   playerNames: DEFAULT_PLAYER_NAMES,
   currentRound: null,
+  lastCompletedRound: null,
   defaultConfig: DEFAULT_CONFIG,
 })

@@ -25,6 +25,7 @@ export const loadAppState = (): AppState => {
     playerNames,
     defaultConfig,
     currentRound: currentRound ? recomputeRound(playerNames, currentRound) : null,
+    lastCompletedRound: null,
   }
 }
 
@@ -71,9 +72,30 @@ export const applyRoundToTotalScores = (state: AppState): AppState => {
   const nextState: AppState = {
     ...state,
     totalScores: nextTotalScores,
+    lastCompletedRound: state.currentRound,
     currentRound: null,
   }
 
+  persistAppState(nextState)
+  return nextState
+}
+
+export const startNextRound = (state: AppState): AppState => {
+  const nextState: AppState = {
+    ...state,
+    currentRound: createDefaultCurrentRound(state.defaultConfig, state.playerNames),
+  }
+  persistAppState(nextState)
+  return nextState
+}
+
+export const restartSession = (state: AppState, clearTotals: boolean): AppState => {
+  const nextState: AppState = {
+    ...state,
+    currentRound: null,
+    lastCompletedRound: null,
+    totalScores: clearTotals ? createDefaultAppState().totalScores : state.totalScores,
+  }
   persistAppState(nextState)
   return nextState
 }
