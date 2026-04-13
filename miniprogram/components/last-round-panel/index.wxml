@@ -1,0 +1,20 @@
+<view wx:if="{{round}}" class="panel">
+  <view class="panel__header">
+    <view>
+      <text class="panel__title">{{title}}</text>
+      <text class="panel__caption">{{roundCaption}}</text>
+    </view>
+    <button class="ghost-btn panel__clear" size="mini" bindtap="handleClear">清除</button>
+  </view>
+
+  <view class="panel__grid">
+    <block wx:for="{{playerNames}}" wx:key="index" wx:for-item="playerName" wx:for-index="index">
+      <view class="panel__item">
+        <text class="panel__name">{{playerName}}</text>
+        <text class="panel__score {{(summaryItems[index].score || 0) > 0 ? 'panel__score--positive' : ((summaryItems[index].score || 0) < 0 ? 'panel__score--negative' : '')}}">
+          {{(summaryItems[index].score || 0) > 0 ? '+' : ''}}{{summaryItems[index].score || 0}}
+        </text>
+      </view>
+    </block>
+  </view>
+</view>

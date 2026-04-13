@@ -18,4 +18,13 @@
       bind:resume="handleResume"
     />
   </view>
+
+  <view wx:if="{{lastCompletedRound}}" class="page__section">
+    <last-round-panel
+      playerNames="{{playerNames}}"
+      scoreKeys="{{scoreKeys}}"
+      round="{{lastCompletedRound}}"
+      bind:clear="handleClearLastRound"
+    />
+  </view>
 </view>

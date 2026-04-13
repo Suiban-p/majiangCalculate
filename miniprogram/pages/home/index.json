@@ -2,6 +2,7 @@
   "usingComponents": {
     "navigation-bar": "/components/navigation-bar/navigation-bar",
     "scoreboard": "/components/scoreboard/index",
-    "rule-config-panel": "/components/rule-config-panel/index"
+    "rule-config-panel": "/components/rule-config-panel/index",
+    "last-round-panel": "/components/last-round-panel/index"
   }
 }

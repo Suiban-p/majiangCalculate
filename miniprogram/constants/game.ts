@@ -4,6 +4,7 @@ export const STORAGE_KEYS = {
   totalScores: 'mj_total_scores',
   playerNames: 'mj_player_names',
   currentRound: 'mj_current_round',
+  lastCompletedRound: 'mj_last_completed_round',
   defaultConfig: 'mj_default_config',
 } as const
 

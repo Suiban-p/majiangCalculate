@@ -1,5 +1,5 @@
-import { AppState, PlayerNameTuple, RoundConfig, ScoreMap } from '../../types/game'
-import { createRoundState } from '../../utils/app-state'
+import { AppState, CurrentRoundState, PlayerNameTuple, RoundConfig, ScoreMap } from '../../types/game'
+import { clearLastCompletedRound, createRoundState } from '../../utils/app-state'
 
 const app = getApp<IAppOption>()
 
@@ -9,6 +9,7 @@ interface HomePageData {
   totalScores: ScoreMap
   config: RoundConfig
   canResumeRound: boolean
+  lastCompletedRound: CurrentRoundState | null
 }
 
 Page<HomePageData>({
@@ -23,6 +24,7 @@ Page<HomePageData>({
       baseScore: 1,
     },
     canResumeRound: false,
+    lastCompletedRound: null,
   },
   onShow() {
     this.syncFromState(app.refreshState())
@@ -34,6 +36,7 @@ Page<HomePageData>({
       totalScores: state.totalScores,
       config: state.defaultConfig,
       canResumeRound: Boolean(state.currentRound),
+      lastCompletedRound: state.lastCompletedRound,
     })
   },
   handleConfigChange(event: WechatMiniprogram.CustomEvent<{ value: RoundConfig }>) {
@@ -57,6 +60,10 @@ Page<HomePageData>({
   },
   handleEditName(event: WechatMiniprogram.CustomEvent<{ index: number; name: string }>) {
     app.setDisplayPlayerName(event.detail.index, event.detail.name)
+    this.syncFromState(app.globalData.state)
+  },
+  handleClearLastRound() {
+    app.setState(clearLastCompletedRound(app.globalData.state))
     this.syncFromState(app.globalData.state)
   },
 })

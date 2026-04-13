@@ -47,6 +47,7 @@
   - `totalScores`
   - `playerNames`
   - `currentRound`
+  - `lastCompletedRound`
   - `defaultConfig`
 
 ### 会话数据
@@ -70,7 +71,8 @@
    - 血战状态
    - 血流状态
 5. 确认页确认后将 `tempScores` 累加到 `totalScores`
-6. 更新后的状态再次写回 storage
+6. 当前局写入 `lastCompletedRound`
+7. 更新后的状态再次写回 storage
 
 ### 显示名流程
 1. storage 中保留持久化 `playerNames`

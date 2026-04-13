@@ -19,13 +19,14 @@ export const loadAppState = (): AppState => {
   const totalScores = getStorage<ScoreMap>(STORAGE_KEYS.totalScores, defaults.totalScores)
   const defaultConfig = getStorage<RoundConfig>(STORAGE_KEYS.defaultConfig, defaults.defaultConfig)
   const currentRound = getStorage<CurrentRoundState | null>(STORAGE_KEYS.currentRound, null)
+  const lastCompletedRound = getStorage<CurrentRoundState | null>(STORAGE_KEYS.lastCompletedRound, null)
 
   return {
     totalScores,
     playerNames,
     defaultConfig,
     currentRound: currentRound ? recomputeRound(playerNames, currentRound) : null,
-    lastCompletedRound: null,
+    lastCompletedRound: lastCompletedRound ? recomputeRound(playerNames, lastCompletedRound) : null,
   }
 }
 
@@ -38,6 +39,12 @@ export const persistAppState = (state: AppState): void => {
     setStorage(STORAGE_KEYS.currentRound, state.currentRound)
   } else {
     removeStorage(STORAGE_KEYS.currentRound)
+  }
+
+  if (state.lastCompletedRound) {
+    setStorage(STORAGE_KEYS.lastCompletedRound, state.lastCompletedRound)
+  } else {
+    removeStorage(STORAGE_KEYS.lastCompletedRound)
   }
 }
 
@@ -95,6 +102,15 @@ export const restartSession = (state: AppState, clearTotals: boolean): AppState 
     currentRound: null,
     lastCompletedRound: null,
     totalScores: clearTotals ? createDefaultAppState().totalScores : state.totalScores,
+  }
+  persistAppState(nextState)
+  return nextState
+}
+
+export const clearLastCompletedRound = (state: AppState): AppState => {
+  const nextState: AppState = {
+    ...state,
+    lastCompletedRound: null,
   }
   persistAppState(nextState)
   return nextState
