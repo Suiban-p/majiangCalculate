@@ -35,25 +35,29 @@
     </view>
 
     <view class="modal__section">
-      <text class="modal__label">基础番</text>
-      <view class="chip-row">
-        <block wx:for="{{[1,2,3,4,5,6]}}" wx:key="*this" wx:for-item="item">
-          <view class="chip {{formValue.baseFan === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="setBaseFan">
-            {{item}}番
+      <block wx:for="{{formValue.winnerDetails}}" wx:key="winner" wx:for-item="detail">
+        <view class="modal__detail-block">
+          <text class="modal__label">{{detail.winner}} 的番数</text>
+          <view class="chip-row">
+            <block wx:for="{{[1,2,3,4,5,6]}}" wx:key="*this" wx:for-item="item">
+              <view class="chip {{detail.baseFan === item ? 'chip--active' : ''}}" data-winner="{{detail.winner}}" data-value="{{item}}" bindtap="setBaseFan">
+                {{item}}番
+              </view>
+            </block>
           </view>
-        </block>
-      </view>
-    </view>
 
-    <view wx:if="{{config.enableGen}}" class="modal__section">
-      <text class="modal__label">根数</text>
-      <view class="chip-row">
-        <block wx:for="{{[0,1,2,3]}}" wx:key="*this" wx:for-item="item">
-          <view class="chip {{formValue.genCount === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="setGenCount">
-            {{item}}根
+          <view wx:if="{{config.enableGen}}" class="modal__detail-subsection">
+            <text class="modal__label">{{detail.winner}} 的根数</text>
+            <view class="chip-row">
+              <block wx:for="{{[0,1,2,3]}}" wx:key="*this" wx:for-item="item">
+                <view class="chip {{detail.genCount === item ? 'chip--active' : ''}}" data-winner="{{detail.winner}}" data-value="{{item}}" bindtap="setGenCount">
+                  {{item}}根
+                </view>
+              </block>
+            </view>
           </view>
-        </block>
-      </view>
+        </view>
+      </block>
     </view>
 
     <view class="modal__preview">{{previewText}}</view>

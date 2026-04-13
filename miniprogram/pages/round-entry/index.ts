@@ -100,8 +100,11 @@ Page<RoundEntryData>({
       winners: string[]
       isZimo: boolean
       loser: string
-      baseFan: number
-      genCount: number
+      winnerDetails: Array<{
+        winner: string
+        baseFan: number
+        genCount: number
+      }>
     }
   }>) {
     const currentRound = app.globalData.state.currentRound
@@ -109,19 +112,23 @@ Page<RoundEntryData>({
       return
     }
 
-    const settlement: HuSettlement = createHuSettlement({
-      config: currentRound.config,
-      playerNames: app.globalData.state.playerNames,
-      winners: event.detail.value.winners,
-      loser: event.detail.value.isZimo ? null : event.detail.value.loser,
-      isZimo: event.detail.value.isZimo,
-      baseFan: event.detail.value.baseFan,
-      genCount: event.detail.value.genCount,
-    })
+    const nextRound = event.detail.value.winnerDetails.reduce<CurrentRoundState>((roundState, detail) => {
+      const settlement: HuSettlement = createHuSettlement({
+        config: roundState.config,
+        playerNames: app.globalData.state.playerNames,
+        winners: [detail.winner],
+        loser: event.detail.value.isZimo ? null : event.detail.value.loser,
+        isZimo: event.detail.value.isZimo,
+        baseFan: detail.baseFan,
+        genCount: detail.genCount,
+      })
+
+      return appendSettlement(app.globalData.state.playerNames, roundState, settlement)
+    }, currentRound)
 
     app.setState({
       ...app.globalData.state,
-      currentRound: appendSettlement(app.globalData.state.playerNames, currentRound, settlement),
+      currentRound: nextRound,
     })
 
     this.setData({ huFormVisible: false })

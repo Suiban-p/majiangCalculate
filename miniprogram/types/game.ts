@@ -122,6 +122,9 @@ export interface HuFormValue {
   winners: PlayerName[]
   isZimo: boolean
   loser: PlayerName
-  baseFan: number
-  genCount: number
+  winnerDetails: Array<{
+    winner: PlayerName
+    baseFan: number
+    genCount: number
+  }>
 }

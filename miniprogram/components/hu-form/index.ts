@@ -1,11 +1,9 @@
 import { DEFAULT_CONFIG } from '../../constants/game'
-import { RoundConfig } from '../../types/game'
+import { HuFormValue, RoundConfig } from '../../types/game'
 import { calculateHuBasePoints } from '../../utils/score'
 
-interface HuFormValue {
-  winners: string[]
-  isZimo: boolean
-  loser: string
+interface WinnerDetailInput {
+  winner: string
   baseFan: number
   genCount: number
 }
@@ -14,8 +12,7 @@ const DEFAULT_FORM_VALUE: HuFormValue = {
   winners: [],
   isZimo: true,
   loser: '',
-  baseFan: 1,
-  genCount: 0,
+  winnerDetails: [],
 }
 
 Component({
@@ -55,13 +52,25 @@ Component({
     },
   },
   methods: {
+    createWinnerDetail(winner: string): WinnerDetailInput {
+      return {
+        winner,
+        baseFan: 1,
+        genCount: 0,
+      }
+    },
+    syncWinnerDetails(winners: string[], currentDetails: WinnerDetailInput[]): WinnerDetailInput[] {
+      return winners.map((winner) => currentDetails.find((item) => item.winner === winner) ?? this.createWinnerDetail(winner))
+    },
     syncFormWithPlayers() {
       const availableWinners = this.data.availableWinners as string[]
       const availableLosers = this.data.availableLosers as string[]
+      const winners = availableWinners.length ? [availableWinners[0]] : []
       const nextFormValue: HuFormValue = {
         ...(this.data.formValue as HuFormValue),
-        winners: availableWinners.length ? [availableWinners[0]] : [],
+        winners,
         loser: availableLosers[0] ?? '',
+        winnerDetails: this.syncWinnerDetails(winners, (this.data.formValue as HuFormValue).winnerDetails || []),
       }
 
       this.setData({
@@ -76,17 +85,30 @@ Component({
       return availableLosers.filter((player) => !formValue.winners.includes(player))
     },
     computePreviewPoints(formValue: HuFormValue): number {
+      const detail = formValue.winnerDetails[0]
+      if (!detail) {
+        return 0
+      }
       const config = this.data.config as RoundConfig
-      const totalFan = formValue.baseFan + (config.enableGen ? formValue.genCount : 0)
+      const totalFan = detail.baseFan + (config.enableGen ? detail.genCount : 0)
       return calculateHuBasePoints(config.baseScore, totalFan, config.maxFan)
     },
     getPreviewText(formValue: HuFormValue): string {
-      const points = this.computePreviewPoints(formValue)
       if (formValue.isZimo) {
-        return `预览：${formValue.baseFan}番 + ${((this.data.config as RoundConfig).enableGen ? formValue.genCount : 0)}根，自摸单家 ${points} 分，胡牌者共收 ${points * 3} 分`
+        const detail = formValue.winnerDetails[0]
+        if (!detail) {
+          return '预览：请选择胡牌人'
+        }
+        const points = this.computePreviewPoints(formValue)
+        return `预览：${detail.baseFan}番 + ${((this.data.config as RoundConfig).enableGen ? detail.genCount : 0)}根，自摸单家 ${points} 分，胡牌者共收 ${points * 3} 分`
       }
-      const winnerCount = formValue.winners.length
-      return `预览：${formValue.baseFan}番 + ${((this.data.config as RoundConfig).enableGen ? formValue.genCount : 0)}根，点炮单家 ${points} 分${winnerCount > 1 ? `，共 ${winnerCount} 家胡牌` : ''}`
+      const winnerSummaries = formValue.winnerDetails.map((detail) => {
+        const config = this.data.config as RoundConfig
+        const totalFan = detail.baseFan + (config.enableGen ? detail.genCount : 0)
+        const points = calculateHuBasePoints(config.baseScore, totalFan, config.maxFan)
+        return `${detail.winner} ${detail.baseFan}番${config.enableGen ? `+${detail.genCount}根` : ''}=${points}分`
+      })
+      return `预览：${winnerSummaries.join('；')}`
     },
     toggleWinner(event: WechatMiniprogram.TouchEvent) {
       const winner = event.currentTarget.dataset.value as string
@@ -115,6 +137,7 @@ Component({
         ...(this.data.formValue as HuFormValue),
         winners,
         loser: loserOptions[0] ?? '',
+        winnerDetails: this.syncWinnerDetails(winners, (this.data.formValue as HuFormValue).winnerDetails || []),
       }
       this.setData({
         formValue: nextFormValue,
@@ -135,6 +158,7 @@ Component({
             : (this.data.availableWinners as string[]).slice(0, 1)
           : currentWinners,
       }
+      nextFormValue.winnerDetails = this.syncWinnerDetails(nextFormValue.winners, nextFormValue.winnerDetails || [])
       const loserOptions = this.getLoserOptions(nextFormValue)
       this.setData({
         formValue: nextFormValue,
@@ -154,9 +178,12 @@ Component({
     },
     setBaseFan(event: WechatMiniprogram.TouchEvent) {
       const baseFan = Number(event.currentTarget.dataset.value)
+      const winner = event.currentTarget.dataset.winner as string
       const nextFormValue = {
         ...(this.data.formValue as HuFormValue),
-        baseFan,
+        winnerDetails: (this.data.formValue as HuFormValue).winnerDetails.map((item) =>
+          item.winner === winner ? { ...item, baseFan } : item,
+        ),
       }
       this.setData({
         formValue: nextFormValue,
@@ -167,9 +194,12 @@ Component({
     },
     setGenCount(event: WechatMiniprogram.TouchEvent) {
       const genCount = Number(event.currentTarget.dataset.value)
+      const winner = event.currentTarget.dataset.winner as string
       const nextFormValue = {
         ...(this.data.formValue as HuFormValue),
-        genCount,
+        winnerDetails: (this.data.formValue as HuFormValue).winnerDetails.map((item) =>
+          item.winner === winner ? { ...item, genCount } : item,
+        ),
       }
       this.setData({
         formValue: nextFormValue,
@@ -189,6 +219,10 @@ Component({
       }
       if (formValue.isZimo && formValue.winners.length > 1) {
         wx.showToast({ title: '自摸只允许单人胡牌', icon: 'none' })
+        return
+      }
+      if (formValue.winnerDetails.length !== formValue.winners.length) {
+        wx.showToast({ title: '胡牌配置不完整', icon: 'none' })
         return
       }
       if (!formValue.isZimo && !formValue.loser) {
