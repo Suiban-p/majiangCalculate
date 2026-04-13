@@ -30,6 +30,7 @@ build/
 .env
 .env.local
 .env.*.local
+*.codex
 
 # 系统文件
 Thumbs.db
