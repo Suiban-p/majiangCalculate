@@ -15,11 +15,21 @@
   </view>
 
   <view class="page__section">
+    <view class="feedback-note {{canConfirm ? 'feedback-note--confirm' : 'feedback-note--warning'}}">
+      {{confirmHint}}
+    </view>
+  </view>
+
+  <view class="page__section">
+    <view wx:if="{{!currentRound || currentRound.settlements.length === 0}}" class="empty-state">
+      <text class="empty-state__title">当前没有可确认的结算</text>
+      <text class="empty-state__text">请先返回结果录入页，完成至少一条结算后再确认累计。</text>
+    </view>
     <settlement-list settlements="{{currentRound ? currentRound.settlements : []}}" />
   </view>
 
   <view class="page__section page__actions">
     <button class="ghost-btn" bindtap="handleBack">返回修改</button>
-    <button class="primary-btn" bindtap="handleConfirm">确认并累加</button>
+    <button class="primary-btn" bindtap="handleConfirm" disabled="{{!canConfirm}}">确认并累计</button>
   </view>
 </view>

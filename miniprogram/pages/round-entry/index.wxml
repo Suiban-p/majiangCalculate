@@ -29,6 +29,9 @@
       bind:undo="handleUndo"
       bind:finish="handleFinish"
     />
+    <view class="feedback-note {{canFinishRound ? 'feedback-note--confirm' : 'feedback-note--warning'}}">
+      {{finishHint}}
+    </view>
   </view>
 
   <view class="page__section">
@@ -36,6 +39,10 @@
   </view>
 
   <view class="page__section">
+    <view wx:if="{{!currentRound || currentRound.settlements.length === 0}}" class="empty-state">
+      <text class="empty-state__title">还没有本局结算</text>
+      <text class="empty-state__text">{{emptySettlementText}}</text>
+    </view>
     <settlement-list settlements="{{currentRound ? currentRound.settlements : []}}" editable="{{true}}" bind:delete="handleDeleteSettlement" />
   </view>
 

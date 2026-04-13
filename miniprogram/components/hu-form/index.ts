@@ -45,6 +45,7 @@ Component({
     previewPoints: 1,
     loserOptions: [] as string[],
     previewText: '',
+    formHint: '',
   },
   lifetimes: {
     attached() {
@@ -78,7 +79,20 @@ Component({
         loserOptions: this.getLoserOptions(nextFormValue),
         previewPoints: this.computePreviewPoints(nextFormValue),
         previewText: this.getPreviewText(nextFormValue),
+        formHint: this.getFormHint(nextFormValue),
       })
+    },
+    getFormHint(formValue: HuFormValue): string {
+      if (!formValue.winners.length) {
+        return '请先选择胡牌人。'
+      }
+      if (!formValue.isZimo && !this.getLoserOptions(formValue).length) {
+        return '当前没有可选的点炮人，请检查本次胡牌人选择。'
+      }
+      if (!formValue.isZimo && !formValue.loser) {
+        return '点炮结算需要先选择点炮人。'
+      }
+      return formValue.isZimo ? '确认后将写入一条自摸结算。' : '确认后将按当前输入写入点炮结算。'
     },
     getLoserOptions(formValue: HuFormValue): string[] {
       const availableLosers = this.data.availableLosers as string[]
@@ -144,6 +158,7 @@ Component({
         loserOptions,
         previewPoints: this.computePreviewPoints(nextFormValue),
         previewText: this.getPreviewText(nextFormValue),
+        formHint: this.getFormHint(nextFormValue),
       })
     },
     setZimo(event: WechatMiniprogram.TouchEvent) {
@@ -165,6 +180,7 @@ Component({
         loserOptions,
         previewPoints: this.computePreviewPoints(nextFormValue),
         previewText: this.getPreviewText(nextFormValue),
+        formHint: this.getFormHint(nextFormValue),
       })
     },
     setLoser(event: WechatMiniprogram.TouchEvent) {
@@ -174,6 +190,10 @@ Component({
           ...(this.data.formValue as HuFormValue),
           loser,
         },
+        formHint: this.getFormHint({
+          ...(this.data.formValue as HuFormValue),
+          loser,
+        }),
       })
     },
     setBaseFan(event: WechatMiniprogram.TouchEvent) {
@@ -190,6 +210,7 @@ Component({
         loserOptions: this.getLoserOptions(nextFormValue),
         previewPoints: this.computePreviewPoints(nextFormValue),
         previewText: this.getPreviewText(nextFormValue),
+        formHint: this.getFormHint(nextFormValue),
       })
     },
     setGenCount(event: WechatMiniprogram.TouchEvent) {
@@ -206,6 +227,7 @@ Component({
         loserOptions: this.getLoserOptions(nextFormValue),
         previewPoints: this.computePreviewPoints(nextFormValue),
         previewText: this.getPreviewText(nextFormValue),
+        formHint: this.getFormHint(nextFormValue),
       })
     },
     handleCancel() {

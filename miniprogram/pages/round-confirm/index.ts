@@ -9,6 +9,8 @@ interface RoundConfirmData {
   totalScores: ScoreMap
   roundScores: ScoreMap
   currentRound: CurrentRoundState | null
+  canConfirm: boolean
+  confirmHint: string
 }
 
 Page<RoundConfirmData>({
@@ -18,6 +20,8 @@ Page<RoundConfirmData>({
     totalScores: {},
     roundScores: {},
     currentRound: null,
+    canConfirm: false,
+    confirmHint: '',
   },
   onShow() {
     const state = app.refreshState()
@@ -28,12 +32,17 @@ Page<RoundConfirmData>({
     this.syncFromState(state)
   },
   syncFromState(state: AppState) {
+    const canConfirm = (state.currentRound?.settlements.length ?? 0) > 0
     this.setData({
       playerNames: app.globalData.session.displayPlayerNames,
       scoreKeys: state.playerNames,
       totalScores: state.totalScores,
       roundScores: state.currentRound?.tempScores ?? {},
       currentRound: state.currentRound,
+      canConfirm,
+      confirmHint: canConfirm
+        ? '确认后将把本局分数累计到总分，并进入下一步操作。'
+        : '当前没有可确认的结算内容，请先返回结果录入页。',
     })
   },
   handleEditName(event: WechatMiniprogram.CustomEvent<{ index: number; name: string }>) {
@@ -44,7 +53,8 @@ Page<RoundConfirmData>({
     wx.navigateBack()
   },
   handleConfirm() {
-    if (!app.globalData.state.currentRound) {
+    if (!app.globalData.state.currentRound || !this.data.canConfirm) {
+      wx.showToast({ title: '当前没有可确认的结算', icon: 'none' })
       return
     }
 

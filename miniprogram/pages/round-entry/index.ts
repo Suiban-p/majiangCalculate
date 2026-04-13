@@ -21,6 +21,8 @@ interface RoundEntryData {
   availableLosers: string[]
   canFinishRound: boolean
   riverHint: string
+  finishHint: string
+  emptySettlementText: string
 }
 
 Page<RoundEntryData>({
@@ -41,6 +43,8 @@ Page<RoundEntryData>({
     availableLosers: [],
     canFinishRound: false,
     riverHint: '',
+    finishHint: '',
+    emptySettlementText: '',
   },
   onShow() {
     const state = app.refreshState()
@@ -76,6 +80,15 @@ Page<RoundEntryData>({
         ? '血流成河允许同一玩家多次胡牌；点炮时可多选胡牌人并分别录入番数。'
         : ''
 
+    const nextCanFinishRound = canFinishRound(currentRound)
+    const finishHint = nextCanFinishRound
+      ? '当前已满足进入本局确认页的条件。'
+      : '请先录入至少一条结算，再进入本局确认。'
+    const emptySettlementText =
+      currentRound.config.mode === 'blood_river'
+        ? '还没有本局结算。先记录当前这次胡牌或其他结算，再决定是否结束本局。'
+        : '还没有本局结算。先记录胡牌、杠牌或查大叫结果。'
+
     this.setData({
       playerNames: app.globalData.session.displayPlayerNames,
       scoreKeys: state.playerNames,
@@ -88,8 +101,10 @@ Page<RoundEntryData>({
       extraText,
       availableWinners,
       availableLosers,
-      canFinishRound: canFinishRound(currentRound),
+      canFinishRound: nextCanFinishRound,
       riverHint,
+      finishHint,
+      emptySettlementText,
     })
   },
   handleEditName(event: WechatMiniprogram.CustomEvent<{ index: number; name: string }>) {
