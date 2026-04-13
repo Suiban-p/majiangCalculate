@@ -77,17 +77,17 @@ Page<RoundEntryData>({
         : `带根 ${currentRound.config.enableGen ? '开启' : '关闭'}`
     const riverHint =
       currentRound.config.mode === 'blood_river'
-        ? '血流成河允许同一玩家多次胡牌；点炮时可多选胡牌人并分别录入番数。'
-        : ''
+        ? '血流成河中，同一玩家后续仍可再次胡牌；点炮时支持一炮多响，并分别录入每位胡牌者。'
+        : '血战到底中，已胡玩家会退出后续选择；剩余 1 人时，本局可进入确认。'
 
     const nextCanFinishRound = canFinishRound(currentRound)
     const finishHint = nextCanFinishRound
-      ? '当前已满足进入本局确认页的条件。'
+      ? '确认后将进入本局确认页。'
       : '请先录入至少一条结算，再进入本局确认。'
     const emptySettlementText =
       currentRound.config.mode === 'blood_river'
-        ? '还没有本局结算。先记录当前这次胡牌或其他结算，再决定是否结束本局。'
-        : '还没有本局结算。先记录胡牌、杠牌或查大叫结果。'
+        ? '当前还没有本局结算。请先记录当前这次胡牌或其他结算。'
+        : '当前还没有本局结算。请先记录胡牌、杠牌或查大叫结果。'
 
     this.setData({
       playerNames: app.globalData.session.displayPlayerNames,
@@ -248,7 +248,7 @@ Page<RoundEntryData>({
   },
   handleFinish() {
     if (!this.data.currentRound || !this.data.canFinishRound) {
-      wx.showToast({ title: '请先录入至少一条结算', icon: 'none' })
+      wx.showToast({ title: '当前不能，请先录入至少一条结算', icon: 'none' })
       return
     }
 

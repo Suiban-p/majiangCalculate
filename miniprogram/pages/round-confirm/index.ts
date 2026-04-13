@@ -42,7 +42,7 @@ Page<RoundConfirmData>({
       canConfirm,
       confirmHint: canConfirm
         ? '确认后将把本局分数累计到总分，并进入下一步操作。'
-        : '当前没有可确认的结算内容，请先返回结果录入页。',
+        : '当前不能，请先返回结果录入页完成至少一条结算。',
     })
   },
   handleEditName(event: WechatMiniprogram.CustomEvent<{ index: number; name: string }>) {
@@ -54,7 +54,7 @@ Page<RoundConfirmData>({
   },
   handleConfirm() {
     if (!app.globalData.state.currentRound || !this.data.canConfirm) {
-      wx.showToast({ title: '当前没有可确认的结算', icon: 'none' })
+      wx.showToast({ title: '当前不能，请先完成至少一条结算', icon: 'none' })
       return
     }
 

@@ -14,7 +14,7 @@
     <round-status modeLabel="{{modeLabel}}" remainingText="{{remainingText}}" extraText="{{extraText}}" />
   </view>
 
-  <view wx:if="{{riverHint}}" class="page__section">
+  <view class="page__section">
     <view class="logic-hint">{{riverHint}}</view>
   </view>
 
@@ -40,10 +40,10 @@
 
   <view class="page__section">
     <view wx:if="{{!currentRound || currentRound.settlements.length === 0}}" class="empty-state">
-      <text class="empty-state__title">还没有本局结算</text>
+      <text class="empty-state__title">当前还没有本局结算</text>
       <text class="empty-state__text">{{emptySettlementText}}</text>
     </view>
-    <settlement-list settlements="{{currentRound ? currentRound.settlements : []}}" editable="{{true}}" bind:delete="handleDeleteSettlement" />
+    <settlement-list wx:else settlements="{{currentRound ? currentRound.settlements : []}}" editable="{{true}}" bind:delete="handleDeleteSettlement" />
   </view>
 
   <hu-form

@@ -22,10 +22,10 @@
 
   <view class="page__section">
     <view wx:if="{{!currentRound || currentRound.settlements.length === 0}}" class="empty-state">
-      <text class="empty-state__title">当前没有可确认的结算</text>
-      <text class="empty-state__text">请先返回结果录入页，完成至少一条结算后再确认累计。</text>
+      <text class="empty-state__title">当前还没有可确认的结算</text>
+      <text class="empty-state__text">当前不能，请先返回结果录入页完成至少一条结算。</text>
     </view>
-    <settlement-list settlements="{{currentRound ? currentRound.settlements : []}}" />
+    <settlement-list wx:else settlements="{{currentRound ? currentRound.settlements : []}}" />
   </view>
 
   <view class="page__section page__actions">

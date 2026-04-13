@@ -5,7 +5,7 @@
 
     <view class="modal__section">
       <text class="modal__label">胡牌人</text>
-      <text wx:if="{{availableWinners.length === 0}}" class="modal__empty">当前没有可选的胡牌人，请先返回检查本局状态。</text>
+      <text wx:if="{{availableWinners.length === 0}}" class="modal__empty">当前还没有可选的胡牌人，请先返回检查本局状态。</text>
       <view class="chip-row">
         <block wx:for="{{availableWinners}}" wx:key="*this" wx:for-item="item">
           <view class="chip {{formValue.winners.indexOf(item) !== -1 ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="toggleWinner">
@@ -21,13 +21,14 @@
         <view class="chip {{formValue.isZimo ? 'chip--active' : ''}}" data-value="zimo" bindtap="setZimo">自摸</view>
         <view class="chip {{!formValue.isZimo ? 'chip--active' : ''}}" data-value="dianpao" bindtap="setZimo">点炮</view>
       </view>
-      <text wx:if="{{allowMultipleWinners && !formValue.isZimo}}" class="modal__hint">血流成河支持一炮多响，可多选胡牌人</text>
+      <text wx:if="{{allowMultipleWinners && !formValue.isZimo}}" class="modal__hint">血流成河支持一炮多响，可多选胡牌人。</text>
       <text wx:if="{{allowMultipleWinners}}" class="modal__hint">血流成河中，同一玩家后续仍可再次胡牌；本次只录入当前这一笔。</text>
+      <text wx:if="{{!allowMultipleWinners}}" class="modal__hint">血战到底中，已胡玩家不会再进入后续胡牌选择。</text>
     </view>
 
     <view wx:if="{{!formValue.isZimo}}" class="modal__section">
       <text class="modal__label">点炮人</text>
-      <text wx:if="{{loserOptions.length === 0}}" class="modal__empty">当前没有可选的点炮人。</text>
+      <text wx:if="{{loserOptions.length === 0}}" class="modal__empty">当前还没有可选的点炮人。</text>
       <view class="chip-row">
         <block wx:for="{{loserOptions}}" wx:key="*this" wx:for-item="item">
           <view class="chip {{formValue.loser === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="setLoser">

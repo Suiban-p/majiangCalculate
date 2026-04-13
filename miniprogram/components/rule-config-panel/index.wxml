@@ -1,7 +1,7 @@
 <view class="panel">
   <view class="panel__header">
     <text class="panel__title">规则配置</text>
-    <text class="panel__caption">先完成 V1 主流程，规则保持简洁</text>
+    <text class="panel__caption">先完成 V1 主流程，规则保持简洁。</text>
   </view>
 
   <view class="panel__section">
@@ -13,6 +13,13 @@
         </view>
       </block>
     </view>
+  </view>
+
+  <view class="panel__section">
+    <text class="panel__label">说明</text>
+    <text class="panel__caption">
+      {{value.mode === 'blood_battle' ? '血战到底：已胡玩家退出后续选择，剩余 1 人时可进入本局确认。' : '血流成河：同一玩家可多次胡牌，点炮时支持一炮多响。'}}
+    </text>
   </view>
 
   <view class="panel__section">
@@ -36,7 +43,7 @@
     <view class="chip-row">
       <block wx:for="{{baseScoreOptions}}" wx:key="*this" wx:for-item="item">
         <view class="chip {{value.baseScore === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="handleBaseScoreTap">
-          {{item}} 元
+          {{item}} 分
         </view>
       </block>
     </view>
