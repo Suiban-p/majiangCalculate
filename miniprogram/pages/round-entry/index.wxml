@@ -1,0 +1,46 @@
+<navigation-bar title="结果录入" color="#1f3625" background="#E9F6EC"></navigation-bar>
+<view class="page">
+  <scoreboard
+    fixedTop="{{true}}"
+    editableNames="{{true}}"
+    playerNames="{{playerNames}}"
+    totalScores="{{totalScores}}"
+    roundScores="{{roundScores}}"
+    bind:editname="handleEditName"
+  />
+
+  <view class="page__section">
+    <round-status modeLabel="{{modeLabel}}" remainingText="{{remainingText}}" extraText="{{extraText}}" />
+  </view>
+
+  <view class="page__section">
+    <action-buttons
+      canUndo="{{!!currentRound && currentRound.settlements.length > 0}}"
+      canFinish="{{!!currentRound && currentRound.settlements.length > 0}}"
+      showChadajiao="{{currentRound && currentRound.config.mode === 'blood_battle'}}"
+      bind:hu="openHuForm"
+      bind:gang="handleGangTap"
+      bind:chadajiao="handleChaDaJiaoTap"
+      bind:undo="handleUndo"
+      bind:finish="handleFinish"
+    />
+  </view>
+
+  <view class="page__section">
+    <score-summary title="本局实时分" playerNames="{{playerNames}}" scores="{{roundScores}}" />
+  </view>
+
+  <view class="page__section">
+    <settlement-list settlements="{{currentRound ? currentRound.settlements : []}}" editable="{{true}}" bind:delete="handleDeleteSettlement" />
+  </view>
+
+  <hu-form
+    visible="{{huFormVisible}}"
+    config="{{currentRound ? currentRound.config : null}}"
+    availableWinners="{{availableWinners}}"
+    availableLosers="{{availableLosers}}"
+    allowMultipleWinners="{{currentRound && currentRound.config.mode === 'blood_river'}}"
+    bind:cancel="closeHuForm"
+    bind:confirm="handleHuConfirm"
+  />
+</view>

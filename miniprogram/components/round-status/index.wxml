@@ -1,0 +1,5 @@
+<view class="status">
+  <text class="status__tag">{{modeLabel}}</text>
+  <text class="status__text">{{remainingText}}</text>
+  <text wx:if="{{extraText}}" class="status__subtext">{{extraText}}</text>
+</view>

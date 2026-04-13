@@ -1,7 +1,7 @@
 # Progress
 
 ## 当前阶段
-- `Phase 1` 已完成。
+- `Phase 2` 已完成。
 
 ## 已完成内容
 - 已读取并对齐：
@@ -9,7 +9,7 @@
   - `AGENTS.md`
 - 已梳理当前项目代码结构：
   - 现有仓库仍以微信原生小程序 TypeScript 模板为基础
-  - 现有页面主要还是模板页，业务页面尚未落地
+  - Phase 2 前项目页面主要还是模板页，业务页面尚未落地
 - 已完成 Phase 1 基础架构：
   - 建立核心类型定义
   - 建立常量与默认状态工厂
@@ -26,12 +26,19 @@
   - 组件目录规划
   - 组件契约表
   - Phase 2 实施计划
+- 已完成 Phase 2 骨架实现：
+  - 首页 page
+  - 结果录入页 page
+  - 本局确认页 page
+  - 共享组件与胡牌 modal 骨架
 
 ## 当前状态
-- 当前业务代码处于“基础层已建立，页面层未开始”的状态。
+- 当前业务代码处于“基础层已建立，页面层与组件层骨架已建立”的状态。
 - `miniprogram/types`、`miniprogram/constants`、`miniprogram/utils` 已有 Phase 1 实现。
+- `miniprogram/pages/home`、`miniprogram/pages/round-entry`、`miniprogram/pages/round-confirm` 已建立。
+- `miniprogram/components/scoreboard`、`rule-config-panel`、`settlement-list`、`action-buttons`、`round-status`、`score-summary`、`hu-form` 已建立。
 - `/docs` 文档体系已建立。
-- 首页、结果录入页、确认页、共享组件仍未开始实现。
+- 首页、结果录入页、确认页、共享组件骨架已实现。
 
 ## 已知问题
 - 全量 `tsc --noEmit` 当前无法完全通过。
@@ -45,25 +52,13 @@
   - 当前实现口径以 `AGENTS.md` 为工程执行约束，尤其是查大叫规则。
 
 ## 未完成事项
-- Phase 2 共享组件实现：
-  - `scoreboard`
-  - `hu-form`
-  - `settlement-list`
-  - 其他辅助组件
-- Phase 2 页面骨架实现：
-  - 首页
-  - 结果录入页
-  - 本局确认页
-- 页面与工具层接线：
-  - 规则配置写入
-  - settlement 录入
-  - 本局确认累加
-  - storage 恢复流程
 - Phase 3 业务闭环：
-  - 血战到底完整录入流程
-  - 血流成河 V1 流程
-  - 一炮多响
-  - 撤销
-  - 查大叫
+  - 杠牌登记逻辑
+  - 查大叫录入与结算
+  - 血流成河 V1 细节补全
+  - 一炮多响的完整表单与结算体验
+  - 更完整的撤销和回滚细节
 - Phase 4 视觉对齐与边界处理
-
+  - Stitch 风格精修
+  - 页面状态反馈
+  - 异常处理

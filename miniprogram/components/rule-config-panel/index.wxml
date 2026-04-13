@@ -1,0 +1,49 @@
+<view class="panel">
+  <view class="panel__header">
+    <text class="panel__title">规则配置</text>
+    <text class="panel__caption">先完成 V1 主流程，规则保持简洁</text>
+  </view>
+
+  <view class="panel__section">
+    <text class="panel__label">模式</text>
+    <view class="chip-row">
+      <block wx:for="{{modeOptions}}" wx:key="value" wx:for-item="item">
+        <view class="chip {{value.mode === item.value ? 'chip--active' : ''}}" data-value="{{item.value}}" bindtap="handleModeTap">
+          {{item.label}}
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="panel__section">
+    <text class="panel__label">带根</text>
+    <switch color="#3c7b52" checked="{{value.enableGen}}" bindchange="handleGenSwitch" />
+  </view>
+
+  <view class="panel__section">
+    <text class="panel__label">封顶</text>
+    <view class="chip-row">
+      <block wx:for="{{maxFanOptions}}" wx:key="*this" wx:for-item="item">
+        <view class="chip {{value.maxFan === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="handleMaxFanTap">
+          {{item}} 番
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="panel__section">
+    <text class="panel__label">底分</text>
+    <view class="chip-row">
+      <block wx:for="{{baseScoreOptions}}" wx:key="*this" wx:for-item="item">
+        <view class="chip {{value.baseScore === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="handleBaseScoreTap">
+          {{item}} 元
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="panel__actions">
+    <button wx:if="{{canResumeRound}}" class="secondary-btn" bindtap="handleResumeTap">恢复未完成单局</button>
+    <button class="primary-btn" bindtap="handleStartTap">进入本局录入</button>
+  </view>
+</view>

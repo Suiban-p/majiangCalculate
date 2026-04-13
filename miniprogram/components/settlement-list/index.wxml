@@ -1,0 +1,19 @@
+<view class="list">
+  <view class="list__header">
+    <text class="list__title">本局记录</text>
+    <text class="list__caption">{{items.length}} 条</text>
+  </view>
+  <block wx:if="{{items.length}}">
+    <block wx:for="{{items}}" wx:key="id" wx:for-item="item" wx:for-index="index">
+      <view class="list__item">
+        <view>
+          <text class="list__index">{{index + 1}}</text>
+          <text class="list__text">{{item.title}}</text>
+          <text class="list__subtext">{{item.subtitle}}</text>
+        </view>
+        <button wx:if="{{editable}}" class="ghost-btn list__delete" size="mini" data-id="{{item.id}}" bindtap="handleDelete">删除</button>
+      </view>
+    </block>
+  </block>
+  <view wx:else class="list__empty">{{emptyText}}</view>
+</view>

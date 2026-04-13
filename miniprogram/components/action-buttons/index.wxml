@@ -1,0 +1,7 @@
+<view class="actions">
+  <button class="primary-btn" bindtap="emitHu">胡牌登记</button>
+  <button class="secondary-btn" bindtap="emitGang">杠牌登记</button>
+  <button wx:if="{{showChadajiao}}" class="secondary-btn" bindtap="emitChaDaJiao">查大叫</button>
+  <button class="ghost-btn" disabled="{{!canUndo}}" bindtap="emitUndo">撤销上一步</button>
+  <button class="ghost-btn" disabled="{{!canFinish}}" bindtap="emitFinish">本局确认</button>
+</view>

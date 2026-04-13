@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "navigation-bar": "/components/navigation-bar/navigation-bar",
+    "scoreboard": "/components/scoreboard/index",
+    "round-status": "/components/round-status/index",
+    "action-buttons": "/components/action-buttons/index",
+    "score-summary": "/components/score-summary/index",
+    "settlement-list": "/components/settlement-list/index",
+    "hu-form": "/components/hu-form/index"
+  }
+}

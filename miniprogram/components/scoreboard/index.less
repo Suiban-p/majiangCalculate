@@ -1,0 +1,72 @@
+.scoreboard {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fff7 100%);
+  border-radius: 28rpx;
+  padding: 28rpx;
+  box-shadow: 0 20rpx 60rpx rgba(35, 74, 43, 0.08);
+}
+
+.scoreboard--fixed {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.scoreboard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20rpx;
+}
+
+.scoreboard__title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #234a2b;
+}
+
+.scoreboard__caption {
+  font-size: 22rpx;
+  color: #7b907d;
+}
+
+.scoreboard__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18rpx;
+}
+
+.scoreboard__card {
+  padding: 22rpx;
+  border-radius: 24rpx;
+  background: #eef9ef;
+}
+
+.scoreboard__name {
+  display: block;
+  font-size: 24rpx;
+  color: #5a7260;
+  margin-bottom: 12rpx;
+}
+
+.scoreboard__score {
+  display: block;
+  font-size: 42rpx;
+  font-weight: 700;
+  color: #3a4a3c;
+}
+
+.scoreboard__score--positive,
+.scoreboard__delta--positive {
+  color: #1e8c49;
+}
+
+.scoreboard__score--negative,
+.scoreboard__delta--negative {
+  color: #c24d2c;
+}
+
+.scoreboard__delta {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 22rpx;
+}

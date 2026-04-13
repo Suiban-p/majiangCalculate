@@ -1,0 +1,20 @@
+<navigation-bar title="四川麻将算番" back="{{false}}" color="#1f3625" background="#E9F6EC"></navigation-bar>
+<view class="page">
+  <scoreboard
+    fixedTop="{{true}}"
+    editableNames="{{true}}"
+    playerNames="{{playerNames}}"
+    totalScores="{{totalScores}}"
+    bind:editname="handleEditName"
+  />
+
+  <view class="page__section">
+    <rule-config-panel
+      value="{{config}}"
+      canResumeRound="{{canResumeRound}}"
+      bind:change="handleConfigChange"
+      bind:start="handleStart"
+      bind:resume="handleResume"
+    />
+  </view>
+</view>

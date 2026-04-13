@@ -1,0 +1,24 @@
+<navigation-bar title="本局确认" color="#1f3625" background="#E9F6EC"></navigation-bar>
+<view class="page">
+  <scoreboard
+    fixedTop="{{true}}"
+    editableNames="{{true}}"
+    playerNames="{{playerNames}}"
+    totalScores="{{totalScores}}"
+    roundScores="{{roundScores}}"
+    bind:editname="handleEditName"
+  />
+
+  <view class="page__section">
+    <score-summary title="本局合计" playerNames="{{playerNames}}" scores="{{roundScores}}" />
+  </view>
+
+  <view class="page__section">
+    <settlement-list settlements="{{currentRound ? currentRound.settlements : []}}" />
+  </view>
+
+  <view class="page__section page__actions">
+    <button class="ghost-btn" bindtap="handleBack">返回修改</button>
+    <button class="primary-btn" bindtap="handleConfirm">确认并累加</button>
+  </view>
+</view>

@@ -1,0 +1,67 @@
+<view wx:if="{{visible}}" class="modal">
+  <view class="modal__mask" bindtap="handleCancel"></view>
+  <view class="modal__panel">
+    <text class="modal__title">胡牌登记</text>
+
+    <view class="modal__section">
+      <text class="modal__label">胡牌人</text>
+      <view class="chip-row">
+        <block wx:for="{{availableWinners}}" wx:key="*this" wx:for-item="item">
+          <view class="chip {{formValue.winners.indexOf(item) !== -1 ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="toggleWinner">
+            {{item}}
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="modal__section">
+      <text class="modal__label">胡牌方式</text>
+      <view class="chip-row">
+        <view class="chip {{formValue.isZimo ? 'chip--active' : ''}}" data-value="zimo" bindtap="setZimo">自摸</view>
+        <view class="chip {{!formValue.isZimo ? 'chip--active' : ''}}" data-value="dianpao" bindtap="setZimo">点炮</view>
+      </view>
+    </view>
+
+    <view wx:if="{{!formValue.isZimo}}" class="modal__section">
+      <text class="modal__label">点炮人</text>
+      <view class="chip-row">
+        <block wx:for="{{availableLosers}}" wx:key="*this" wx:for-item="item">
+          <view class="chip {{formValue.loser === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="setLoser">
+            {{item}}
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="modal__section">
+      <text class="modal__label">基础番</text>
+      <view class="chip-row">
+        <block wx:for="{{[1,2,3,4,5,6]}}" wx:key="*this" wx:for-item="item">
+          <view class="chip {{formValue.baseFan === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="setBaseFan">
+            {{item}}番
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view wx:if="{{config.enableGen}}" class="modal__section">
+      <text class="modal__label">根数</text>
+      <view class="chip-row">
+        <block wx:for="{{[0,1,2,3]}}" wx:key="*this" wx:for-item="item">
+          <view class="chip {{formValue.genCount === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="setGenCount">
+            {{item}}根
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="modal__preview">
+      预览：{{formValue.baseFan}}番 + {{config.enableGen ? formValue.genCount : 0}}根，单家 {{previewPoints}} 分
+    </view>
+
+    <view class="modal__actions">
+      <button class="ghost-btn" bindtap="handleCancel">取消</button>
+      <button class="primary-btn" bindtap="handleConfirm">确认结算</button>
+    </view>
+  </view>
+</view>
