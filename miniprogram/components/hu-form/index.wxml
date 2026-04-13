@@ -21,6 +21,7 @@
         <view class="chip {{!formValue.isZimo ? 'chip--active' : ''}}" data-value="dianpao" bindtap="setZimo">点炮</view>
       </view>
       <text wx:if="{{allowMultipleWinners && !formValue.isZimo}}" class="modal__hint">血流成河支持一炮多响，可多选胡牌人</text>
+      <text wx:if="{{allowMultipleWinners}}" class="modal__hint">血流成河中，同一玩家后续仍可再次胡牌；本次只录入当前这一次。</text>
     </view>
 
     <view wx:if="{{!formValue.isZimo}}" class="modal__section">

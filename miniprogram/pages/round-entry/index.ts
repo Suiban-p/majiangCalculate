@@ -20,6 +20,7 @@ interface RoundEntryData {
   availableWinners: string[]
   availableLosers: string[]
   canFinishRound: boolean
+  riverHint: string
 }
 
 Page<RoundEntryData>({
@@ -39,6 +40,7 @@ Page<RoundEntryData>({
     availableWinners: [],
     availableLosers: [],
     canFinishRound: false,
+    riverHint: '',
   },
   onShow() {
     const state = app.refreshState()
@@ -69,6 +71,10 @@ Page<RoundEntryData>({
       currentRound.config.mode === 'blood_river'
         ? state.playerNames.map((name) => `${name} ${currentRound.riverState.huCount[name] ?? 0}胡`).join(' / ')
         : `带根 ${currentRound.config.enableGen ? '开启' : '关闭'}`
+    const riverHint =
+      currentRound.config.mode === 'blood_river'
+        ? '血流成河允许同一玩家多次胡牌；点炮时可多选胡牌人并分别录入番数。'
+        : ''
 
     this.setData({
       playerNames: app.globalData.session.displayPlayerNames,
@@ -83,6 +89,7 @@ Page<RoundEntryData>({
       availableWinners,
       availableLosers,
       canFinishRound: canFinishRound(currentRound),
+      riverHint,
     })
   },
   handleEditName(event: WechatMiniprogram.CustomEvent<{ index: number; name: string }>) {
@@ -133,6 +140,9 @@ Page<RoundEntryData>({
 
     this.setData({ huFormVisible: false })
     this.syncFromState(app.globalData.state)
+    if (app.globalData.state.currentRound?.config.mode === 'blood_river') {
+      wx.showToast({ title: '已记录胡牌，可继续录入下一次胡牌', icon: 'none' })
+    }
     this.maybePromptRoundComplete(app.globalData.state.currentRound)
   },
   handleGangTap() {
