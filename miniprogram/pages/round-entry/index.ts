@@ -1,6 +1,6 @@
 import { AppState, ChaDaJiaoSettlement, CurrentRoundState, GangSettlement, HuSettlement, PlayerNameTuple, ScoreMap } from '../../types/game'
 import { createChaDaJiaoSettlement, createGangSettlement, createHuSettlement } from '../../utils/score'
-import { appendSettlement, recomputeRound, undoLastSettlement } from '../../utils/round'
+import { appendSettlement, canFinishRound, removeSettlementById, undoLastSettlement } from '../../utils/round'
 
 const app = getApp<IAppOption>()
 
@@ -19,6 +19,7 @@ interface RoundEntryData {
   chadajiaoFormVisible: boolean
   availableWinners: string[]
   availableLosers: string[]
+  canFinishRound: boolean
 }
 
 Page<RoundEntryData>({
@@ -37,6 +38,7 @@ Page<RoundEntryData>({
     chadajiaoFormVisible: false,
     availableWinners: [],
     availableLosers: [],
+    canFinishRound: false,
   },
   onShow() {
     const state = app.refreshState()
@@ -80,6 +82,7 @@ Page<RoundEntryData>({
       extraText,
       availableWinners,
       availableLosers,
+      canFinishRound: canFinishRound(currentRound),
     })
   },
   handleEditName(event: WechatMiniprogram.CustomEvent<{ index: number; name: string }>) {
@@ -204,21 +207,15 @@ Page<RoundEntryData>({
       return
     }
 
-    const nextRound: CurrentRoundState = {
-      ...currentRound,
-      settlements: currentRound.settlements.filter((item) => item.id !== event.detail.id),
-      status: 'ongoing',
-    }
-
     app.setState({
       ...app.globalData.state,
-      currentRound: recomputeRound(app.globalData.state.playerNames, nextRound),
+      currentRound: removeSettlementById(app.globalData.state.playerNames, currentRound, event.detail.id),
     })
     this.syncFromState(app.globalData.state)
     this.maybePromptRoundComplete(app.globalData.state.currentRound)
   },
   handleFinish() {
-    if (!this.data.currentRound?.settlements.length) {
+    if (!this.data.currentRound || !this.data.canFinishRound) {
       wx.showToast({ title: '请先录入至少一条结算', icon: 'none' })
       return
     }

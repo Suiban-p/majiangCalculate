@@ -17,7 +17,7 @@
   <view class="page__section">
     <action-buttons
       canUndo="{{!!currentRound && currentRound.settlements.length > 0}}"
-      canFinish="{{!!currentRound && currentRound.settlements.length > 0}}"
+      canFinish="{{canFinishRound}}"
       showChadajiao="{{currentRound && currentRound.config.mode === 'blood_battle'}}"
       bind:hu="openHuForm"
       bind:gang="handleGangTap"

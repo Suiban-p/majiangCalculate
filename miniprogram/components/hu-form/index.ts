@@ -129,7 +129,11 @@ Component({
       const nextFormValue = {
         ...(this.data.formValue as HuFormValue),
         isZimo,
-        winners: isZimo && currentWinners.length ? [currentWinners[0]] : currentWinners,
+        winners: isZimo
+          ? currentWinners.length
+            ? [currentWinners[0]]
+            : (this.data.availableWinners as string[]).slice(0, 1)
+          : currentWinners,
       }
       const loserOptions = this.getLoserOptions(nextFormValue)
       this.setData({
@@ -181,6 +185,10 @@ Component({
       const formValue = this.data.formValue as HuFormValue
       if (!formValue.winners.length) {
         wx.showToast({ title: '请选择胡牌人', icon: 'none' })
+        return
+      }
+      if (formValue.isZimo && formValue.winners.length > 1) {
+        wx.showToast({ title: '自摸只允许单人胡牌', icon: 'none' })
         return
       }
       if (!formValue.isZimo && !formValue.loser) {

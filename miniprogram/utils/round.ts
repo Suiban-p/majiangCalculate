@@ -68,17 +68,42 @@ export const recomputeRound = (
   }
 }
 
+export const replaceSettlements = (
+  playerNames: PlayerNameTuple,
+  round: CurrentRoundState,
+  settlements: Settlement[],
+): CurrentRoundState =>
+  recomputeRound(playerNames, {
+    ...round,
+    settlements,
+    status: 'ongoing',
+  })
+
 export const appendSettlement = (
   playerNames: PlayerNameTuple,
   round: CurrentRoundState,
   settlement: Settlement,
 ): CurrentRoundState => {
-  const nextRound: CurrentRoundState = {
-    ...round,
-    settlements: [...round.settlements, settlement],
+  return replaceSettlements(playerNames, round, [...round.settlements, settlement])
+}
+
+export const removeSettlementById = (
+  playerNames: PlayerNameTuple,
+  round: CurrentRoundState,
+  settlementId: string,
+): CurrentRoundState =>
+  replaceSettlements(
+    playerNames,
+    round,
+    round.settlements.filter((settlement) => settlement.id !== settlementId),
+  )
+
+export const canFinishRound = (round: CurrentRoundState): boolean => {
+  if (round.config.mode === 'blood_river') {
+    return round.settlements.length > 0
   }
 
-  return recomputeRound(playerNames, nextRound)
+  return round.status === 'completed' || round.settlements.length > 0
 }
 
 export const undoLastSettlement = (
@@ -89,10 +114,5 @@ export const undoLastSettlement = (
     return round
   }
 
-  return recomputeRound(playerNames, {
-    ...round,
-    settlements: round.settlements.slice(0, -1),
-    status: 'ongoing',
-  })
+  return replaceSettlements(playerNames, round, round.settlements.slice(0, -1))
 }
-
