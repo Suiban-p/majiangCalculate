@@ -4,14 +4,14 @@
     <text class="scoreboard__caption">点击名字可临时修改</text>
   </view>
   <view class="scoreboard__grid">
-    <block wx:for="{{playerNames}}" wx:key="*this" wx:for-item="playerName" wx:for-index="index">
+    <block wx:for="{{playerNames}}" wx:key="index" wx:for-item="playerName" wx:for-index="index">
       <view class="scoreboard__card" data-index="{{index}}" bindtap="handlePlayerTap">
         <text class="scoreboard__name">{{playerName}}</text>
-        <text class="scoreboard__score {{(totalScores[playerName] || 0) > 0 ? 'scoreboard__score--positive' : ((totalScores[playerName] || 0) < 0 ? 'scoreboard__score--negative' : '')}}">
-          {{totalScores[playerName] || 0}}
+        <text class="scoreboard__score {{(totalScores[scoreKeys[index]] || 0) > 0 ? 'scoreboard__score--positive' : ((totalScores[scoreKeys[index]] || 0) < 0 ? 'scoreboard__score--negative' : '')}}">
+          {{totalScores[scoreKeys[index]] || 0}}
         </text>
-        <text wx:if="{{roundScores && roundScores[playerName]}}" class="scoreboard__delta {{roundScores[playerName] > 0 ? 'scoreboard__delta--positive' : 'scoreboard__delta--negative'}}">
-          本局 {{roundScores[playerName] > 0 ? '+' : ''}}{{roundScores[playerName]}}
+        <text wx:if="{{roundScores && roundScores[scoreKeys[index]]}}" class="scoreboard__delta {{roundScores[scoreKeys[index]] > 0 ? 'scoreboard__delta--positive' : 'scoreboard__delta--negative'}}">
+          本局 {{roundScores[scoreKeys[index]] > 0 ? '+' : ''}}{{roundScores[scoreKeys[index]]}}
         </text>
       </view>
     </block>

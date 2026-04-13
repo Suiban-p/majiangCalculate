@@ -4,6 +4,10 @@ Component({
       type: Array,
       value: ['玩家A', '玩家B', '玩家C', '玩家D'],
     },
+    scoreKeys: {
+      type: Array,
+      value: ['玩家A', '玩家B', '玩家C', '玩家D'],
+    },
     totalScores: {
       type: Object,
       value: {},

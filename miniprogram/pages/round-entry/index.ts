@@ -1,12 +1,4 @@
-import {
-  AppState,
-  ChaDaJiaoSettlement,
-  CurrentRoundState,
-  GangSettlement,
-  HuSettlement,
-  PlayerNameTuple,
-  ScoreMap,
-} from '../../types/game'
+import { AppState, ChaDaJiaoSettlement, CurrentRoundState, GangSettlement, HuSettlement, PlayerNameTuple, ScoreMap } from '../../types/game'
 import { createChaDaJiaoSettlement, createGangSettlement, createHuSettlement } from '../../utils/score'
 import { appendSettlement, recomputeRound, undoLastSettlement } from '../../utils/round'
 
@@ -14,6 +6,8 @@ const app = getApp<IAppOption>()
 
 interface RoundEntryData {
   playerNames: PlayerNameTuple
+  scoreKeys: PlayerNameTuple
+  activePlayerNames: string[]
   totalScores: ScoreMap
   roundScores: ScoreMap
   currentRound: CurrentRoundState | null
@@ -30,6 +24,8 @@ interface RoundEntryData {
 Page<RoundEntryData>({
   data: {
     playerNames: ['玩家A', '玩家B', '玩家C', '玩家D'],
+    scoreKeys: ['玩家A', '玩家B', '玩家C', '玩家D'],
+    activePlayerNames: ['玩家A', '玩家B', '玩家C', '玩家D'],
     totalScores: {},
     roundScores: {},
     currentRound: null,
@@ -56,11 +52,12 @@ Page<RoundEntryData>({
       return
     }
 
-    const availableWinners =
+    const activePlayerNames =
       currentRound.config.mode === 'blood_battle'
         ? state.playerNames.filter((name) => !currentRound.battleState.eliminated.includes(name))
         : [...state.playerNames]
-    const availableLosers = [...state.playerNames]
+    const availableWinners = [...activePlayerNames]
+    const availableLosers = [...activePlayerNames]
     const modeLabel = currentRound.config.mode === 'blood_battle' ? '血战到底' : '血流成河'
     const remainingText =
       currentRound.config.mode === 'blood_battle'
@@ -72,7 +69,9 @@ Page<RoundEntryData>({
         : `带根 ${currentRound.config.enableGen ? '开启' : '关闭'}`
 
     this.setData({
-      playerNames: state.playerNames,
+      playerNames: app.globalData.session.displayPlayerNames,
+      scoreKeys: state.playerNames,
+      activePlayerNames,
       totalScores: state.totalScores,
       roundScores: currentRound.tempScores,
       currentRound,
@@ -84,12 +83,7 @@ Page<RoundEntryData>({
     })
   },
   handleEditName(event: WechatMiniprogram.CustomEvent<{ index: number; name: string }>) {
-    const nextNames = [...app.globalData.state.playerNames] as PlayerNameTuple
-    nextNames[event.detail.index] = event.detail.name
-    app.setState({
-      ...app.globalData.state,
-      playerNames: nextNames,
-    })
+    app.setDisplayPlayerName(event.detail.index, event.detail.name)
     this.syncFromState(app.globalData.state)
   },
   openHuForm() {
@@ -221,6 +215,7 @@ Page<RoundEntryData>({
       currentRound: recomputeRound(app.globalData.state.playerNames, nextRound),
     })
     this.syncFromState(app.globalData.state)
+    this.maybePromptRoundComplete(app.globalData.state.currentRound)
   },
   handleFinish() {
     if (!this.data.currentRound?.settlements.length) {

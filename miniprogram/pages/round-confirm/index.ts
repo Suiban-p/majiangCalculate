@@ -5,6 +5,7 @@ const app = getApp<IAppOption>()
 
 interface RoundConfirmData {
   playerNames: PlayerNameTuple
+  scoreKeys: PlayerNameTuple
   totalScores: ScoreMap
   roundScores: ScoreMap
   currentRound: CurrentRoundState | null
@@ -13,6 +14,7 @@ interface RoundConfirmData {
 Page<RoundConfirmData>({
   data: {
     playerNames: ['玩家A', '玩家B', '玩家C', '玩家D'],
+    scoreKeys: ['玩家A', '玩家B', '玩家C', '玩家D'],
     totalScores: {},
     roundScores: {},
     currentRound: null,
@@ -27,19 +29,15 @@ Page<RoundConfirmData>({
   },
   syncFromState(state: AppState) {
     this.setData({
-      playerNames: state.playerNames,
+      playerNames: app.globalData.session.displayPlayerNames,
+      scoreKeys: state.playerNames,
       totalScores: state.totalScores,
       roundScores: state.currentRound?.tempScores ?? {},
       currentRound: state.currentRound,
     })
   },
   handleEditName(event: WechatMiniprogram.CustomEvent<{ index: number; name: string }>) {
-    const nextNames = [...app.globalData.state.playerNames] as PlayerNameTuple
-    nextNames[event.detail.index] = event.detail.name
-    app.setState({
-      ...app.globalData.state,
-      playerNames: nextNames,
-    })
+    app.setDisplayPlayerName(event.detail.index, event.detail.name)
     this.syncFromState(app.globalData.state)
   },
   handleBack() {

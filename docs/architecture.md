@@ -49,6 +49,13 @@
   - `currentRound`
   - `defaultConfig`
 
+### 会话数据
+- 当前会话显示名不进入持久化 `AppState`。
+- 会话态数据用于支持“玩家名临时修改，仅当前会话有效”。
+- 展示组件通过：
+  - `playerNames` 作为显示名
+  - `scoreKeys` 作为分数字典 key
+
 ### 启动流程
 1. `app.ts` 启动时加载 `AppState`
 2. `utils/app-state.ts` 从 storage 恢复持久化数据
@@ -64,6 +71,12 @@
    - 血流状态
 5. 确认页确认后将 `tempScores` 累加到 `totalScores`
 6. 更新后的状态再次写回 storage
+
+### 显示名流程
+1. storage 中保留持久化 `playerNames`
+2. 当前会话单独维护显示名
+3. 记分板和分数摘要显示会话名
+4. 计分和累计分仍按持久化 key 计算
 
 ### 撤销流程
 1. 结果录入页触发撤销
@@ -109,4 +122,3 @@
 - 组件层
 - 页面和工具层联动
 - Stitch 风格转译
-

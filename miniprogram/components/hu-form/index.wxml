@@ -20,12 +20,13 @@
         <view class="chip {{formValue.isZimo ? 'chip--active' : ''}}" data-value="zimo" bindtap="setZimo">自摸</view>
         <view class="chip {{!formValue.isZimo ? 'chip--active' : ''}}" data-value="dianpao" bindtap="setZimo">点炮</view>
       </view>
+      <text wx:if="{{allowMultipleWinners && !formValue.isZimo}}" class="modal__hint">血流成河支持一炮多响，可多选胡牌人</text>
     </view>
 
     <view wx:if="{{!formValue.isZimo}}" class="modal__section">
       <text class="modal__label">点炮人</text>
       <view class="chip-row">
-        <block wx:for="{{availableLosers}}" wx:key="*this" wx:for-item="item">
+        <block wx:for="{{loserOptions}}" wx:key="*this" wx:for-item="item">
           <view class="chip {{formValue.loser === item ? 'chip--active' : ''}}" data-value="{{item}}" bindtap="setLoser">
             {{item}}
           </view>
@@ -55,9 +56,7 @@
       </view>
     </view>
 
-    <view class="modal__preview">
-      预览：{{formValue.baseFan}}番 + {{config.enableGen ? formValue.genCount : 0}}根，单家 {{previewPoints}} 分
-    </view>
+    <view class="modal__preview">{{previewText}}</view>
 
     <view class="modal__actions">
       <button class="ghost-btn" bindtap="handleCancel">取消</button>

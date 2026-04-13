@@ -4,13 +4,14 @@
     fixedTop="{{true}}"
     editableNames="{{true}}"
     playerNames="{{playerNames}}"
+    scoreKeys="{{scoreKeys}}"
     totalScores="{{totalScores}}"
     roundScores="{{roundScores}}"
     bind:editname="handleEditName"
   />
 
   <view class="page__section">
-    <score-summary title="本局合计" playerNames="{{playerNames}}" scores="{{roundScores}}" />
+    <score-summary title="本局合计" playerNames="{{playerNames}}" scoreKeys="{{scoreKeys}}" scores="{{roundScores}}" />
   </view>
 
   <view class="page__section">

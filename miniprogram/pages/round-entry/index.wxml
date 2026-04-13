@@ -4,6 +4,7 @@
     fixedTop="{{true}}"
     editableNames="{{true}}"
     playerNames="{{playerNames}}"
+    scoreKeys="{{scoreKeys}}"
     totalScores="{{totalScores}}"
     roundScores="{{roundScores}}"
     bind:editname="handleEditName"
@@ -27,7 +28,7 @@
   </view>
 
   <view class="page__section">
-    <score-summary title="本局实时分" playerNames="{{playerNames}}" scores="{{roundScores}}" />
+    <score-summary title="本局实时分" playerNames="{{playerNames}}" scoreKeys="{{scoreKeys}}" scores="{{roundScores}}" />
   </view>
 
   <view class="page__section">
@@ -46,7 +47,7 @@
   <gang-form
     visible="{{gangFormVisible}}"
     config="{{currentRound ? currentRound.config : null}}"
-    playerNames="{{playerNames}}"
+    playerNames="{{activePlayerNames}}"
     bind:cancel="closeGangForm"
     bind:confirm="handleGangConfirm"
   />

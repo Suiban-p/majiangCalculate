@@ -89,6 +89,10 @@ export interface AppState {
   defaultConfig: RoundConfig
 }
 
+export interface SessionState {
+  displayPlayerNames: PlayerNameTuple
+}
+
 export interface HuCalculationInput {
   config: RoundConfig
   playerNames: PlayerNameTuple

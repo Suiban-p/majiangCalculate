@@ -4,6 +4,7 @@
     fixedTop="{{true}}"
     editableNames="{{true}}"
     playerNames="{{playerNames}}"
+    scoreKeys="{{scoreKeys}}"
     totalScores="{{totalScores}}"
     bind:editname="handleEditName"
   />

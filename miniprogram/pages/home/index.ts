@@ -5,6 +5,7 @@ const app = getApp<IAppOption>()
 
 interface HomePageData {
   playerNames: PlayerNameTuple
+  scoreKeys: PlayerNameTuple
   totalScores: ScoreMap
   config: RoundConfig
   canResumeRound: boolean
@@ -13,6 +14,7 @@ interface HomePageData {
 Page<HomePageData>({
   data: {
     playerNames: ['玩家A', '玩家B', '玩家C', '玩家D'],
+    scoreKeys: ['玩家A', '玩家B', '玩家C', '玩家D'],
     totalScores: {},
     config: {
       mode: 'blood_battle',
@@ -27,7 +29,8 @@ Page<HomePageData>({
   },
   syncFromState(state: AppState) {
     this.setData({
-      playerNames: state.playerNames,
+      playerNames: app.globalData.session.displayPlayerNames,
+      scoreKeys: state.playerNames,
       totalScores: state.totalScores,
       config: state.defaultConfig,
       canResumeRound: Boolean(state.currentRound),
@@ -53,12 +56,7 @@ Page<HomePageData>({
     wx.navigateTo({ url: '/pages/round-entry/index' })
   },
   handleEditName(event: WechatMiniprogram.CustomEvent<{ index: number; name: string }>) {
-    const nextNames = [...app.globalData.state.playerNames] as PlayerNameTuple
-    nextNames[event.detail.index] = event.detail.name
-    app.setState({
-      ...app.globalData.state,
-      playerNames: nextNames,
-    })
+    app.setDisplayPlayerName(event.detail.index, event.detail.name)
     this.syncFromState(app.globalData.state)
   },
 })

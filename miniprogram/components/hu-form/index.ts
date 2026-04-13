@@ -46,6 +46,8 @@ Component({
   data: {
     formValue: DEFAULT_FORM_VALUE,
     previewPoints: 1,
+    loserOptions: [] as string[],
+    previewText: '',
   },
   lifetimes: {
     attached() {
@@ -64,46 +66,77 @@ Component({
 
       this.setData({
         formValue: nextFormValue,
+        loserOptions: this.getLoserOptions(nextFormValue),
         previewPoints: this.computePreviewPoints(nextFormValue),
+        previewText: this.getPreviewText(nextFormValue),
       })
+    },
+    getLoserOptions(formValue: HuFormValue): string[] {
+      const availableLosers = this.data.availableLosers as string[]
+      return availableLosers.filter((player) => !formValue.winners.includes(player))
     },
     computePreviewPoints(formValue: HuFormValue): number {
       const config = this.data.config as RoundConfig
       const totalFan = formValue.baseFan + (config.enableGen ? formValue.genCount : 0)
       return calculateHuBasePoints(config.baseScore, totalFan, config.maxFan)
     },
+    getPreviewText(formValue: HuFormValue): string {
+      const points = this.computePreviewPoints(formValue)
+      if (formValue.isZimo) {
+        return `预览：${formValue.baseFan}番 + ${((this.data.config as RoundConfig).enableGen ? formValue.genCount : 0)}根，自摸单家 ${points} 分，胡牌者共收 ${points * 3} 分`
+      }
+      const winnerCount = formValue.winners.length
+      return `预览：${formValue.baseFan}番 + ${((this.data.config as RoundConfig).enableGen ? formValue.genCount : 0)}根，点炮单家 ${points} 分${winnerCount > 1 ? `，共 ${winnerCount} 家胡牌` : ''}`
+    },
     toggleWinner(event: WechatMiniprogram.TouchEvent) {
       const winner = event.currentTarget.dataset.value as string
       const current = (this.data.formValue as HuFormValue).winners
       const allowMultiple = Boolean(this.data.allowMultipleWinners)
+      const isZimo = (this.data.formValue as HuFormValue).isZimo
       let winners = allowMultiple
         ? current.includes(winner)
           ? current.filter((item) => item !== winner)
           : [...current, winner]
         : [winner]
 
+      if (isZimo) {
+        winners = [winner]
+      }
+
       if (!winners.length) {
         winners = [winner]
       }
 
+      const loserOptions = this.getLoserOptions({
+        ...(this.data.formValue as HuFormValue),
+        winners,
+      })
       const nextFormValue = {
         ...(this.data.formValue as HuFormValue),
         winners,
+        loser: loserOptions[0] ?? '',
       }
       this.setData({
         formValue: nextFormValue,
+        loserOptions,
         previewPoints: this.computePreviewPoints(nextFormValue),
+        previewText: this.getPreviewText(nextFormValue),
       })
     },
     setZimo(event: WechatMiniprogram.TouchEvent) {
       const isZimo = event.currentTarget.dataset.value === 'zimo'
+      const currentWinners = (this.data.formValue as HuFormValue).winners
       const nextFormValue = {
         ...(this.data.formValue as HuFormValue),
         isZimo,
+        winners: isZimo && currentWinners.length ? [currentWinners[0]] : currentWinners,
       }
+      const loserOptions = this.getLoserOptions(nextFormValue)
       this.setData({
         formValue: nextFormValue,
+        loserOptions,
         previewPoints: this.computePreviewPoints(nextFormValue),
+        previewText: this.getPreviewText(nextFormValue),
       })
     },
     setLoser(event: WechatMiniprogram.TouchEvent) {
@@ -123,7 +156,9 @@ Component({
       }
       this.setData({
         formValue: nextFormValue,
+        loserOptions: this.getLoserOptions(nextFormValue),
         previewPoints: this.computePreviewPoints(nextFormValue),
+        previewText: this.getPreviewText(nextFormValue),
       })
     },
     setGenCount(event: WechatMiniprogram.TouchEvent) {
@@ -134,7 +169,9 @@ Component({
       }
       this.setData({
         formValue: nextFormValue,
+        loserOptions: this.getLoserOptions(nextFormValue),
         previewPoints: this.computePreviewPoints(nextFormValue),
+        previewText: this.getPreviewText(nextFormValue),
       })
     },
     handleCancel() {

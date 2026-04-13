@@ -1,11 +1,11 @@
 <view class="summary">
   <text class="summary__title">{{title}}</text>
   <view class="summary__grid">
-    <block wx:for="{{playerNames}}" wx:key="*this" wx:for-item="playerName">
+    <block wx:for="{{playerNames}}" wx:key="index" wx:for-item="playerName" wx:for-index="index">
       <view class="summary__item">
         <text class="summary__name">{{playerName}}</text>
-        <text class="summary__score {{(scores[playerName] || 0) > 0 ? 'summary__score--positive' : ((scores[playerName] || 0) < 0 ? 'summary__score--negative' : '')}}">
-          {{(scores[playerName] || 0) > 0 ? '+' : ''}}{{scores[playerName] || 0}}
+        <text class="summary__score {{(scores[scoreKeys[index]] || 0) > 0 ? 'summary__score--positive' : ((scores[scoreKeys[index]] || 0) < 0 ? 'summary__score--negative' : '')}}">
+          {{(scores[scoreKeys[index]] || 0) > 0 ? '+' : ''}}{{scores[scoreKeys[index]] || 0}}
         </text>
       </view>
     </block>
