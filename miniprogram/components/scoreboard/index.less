@@ -2,6 +2,7 @@
   background: linear-gradient(180deg, #ffffff 0%, #f7fff7 100%);
   border-radius: 28rpx;
   padding: 28rpx;
+  border: 1rpx solid rgba(88, 118, 95, 0.12);
   box-shadow: 0 20rpx 60rpx rgba(35, 74, 43, 0.08);
 }
 
@@ -9,13 +10,16 @@
   position: sticky;
   top: 0;
   z-index: 20;
+  margin-top: 8rpx;
+  backdrop-filter: blur(12rpx);
 }
 
 .scoreboard__header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 20rpx;
+  align-items: center;
+  margin-bottom: 22rpx;
+  gap: 16rpx;
 }
 
 .scoreboard__title {
@@ -27,6 +31,7 @@
 .scoreboard__caption {
   font-size: 22rpx;
   color: #7b907d;
+  text-align: right;
 }
 
 .scoreboard__grid {
@@ -36,23 +41,28 @@
 }
 
 .scoreboard__card {
-  padding: 22rpx;
+  min-height: 156rpx;
+  padding: 24rpx 22rpx;
   border-radius: 24rpx;
-  background: #eef9ef;
+  background: linear-gradient(180deg, #f3fbf4 0%, #ecf7ee 100%);
+  border: 1rpx solid rgba(89, 124, 96, 0.1);
 }
 
 .scoreboard__name {
   display: block;
   font-size: 24rpx;
-  color: #5a7260;
-  margin-bottom: 12rpx;
+  line-height: 1.4;
+  color: #56705d;
+  margin-bottom: 14rpx;
 }
 
 .scoreboard__score {
   display: block;
   font-size: 42rpx;
+  line-height: 1.1;
   font-weight: 700;
   color: #3a4a3c;
+  letter-spacing: -1rpx;
 }
 
 .scoreboard__score--positive,
@@ -67,6 +77,8 @@
 
 .scoreboard__delta {
   display: block;
-  margin-top: 10rpx;
+  margin-top: 14rpx;
   font-size: 22rpx;
+  line-height: 1.4;
+  font-weight: 600;
 }
