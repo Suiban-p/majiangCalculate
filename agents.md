@@ -378,3 +378,21 @@ Stitch 只作为：
 - 计算结果与 PRD 一致
 - UI 基本符合 Stitch 风格
 - 关键工具函数有最少一组自校验样例或测试数据
+
+## 文档更新规则（Documentation Rule）
+
+每完成一个阶段（Phase）后：
+
+- 更新 docs/progress.md
+- 更新 docs/next-step.md
+
+如果架构或实现策略发生变化：
+
+- 更新 docs/decisions.md
+- 更新 docs/architecture.md
+
+注意：
+
+- 不要重写历史记录
+- 只追加或修改相关部分
+- 保留变更前后的上下文

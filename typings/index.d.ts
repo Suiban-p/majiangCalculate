@@ -1,8 +1,11 @@
 /// <reference path="./types/index.d.ts" />
 
+type AppState = import('../miniprogram/types/game').AppState
+
 interface IAppOption {
   globalData: {
-    userInfo?: WechatMiniprogram.UserInfo,
+    state: AppState,
   }
-  userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback,
+  setState: (nextState: AppState) => void,
+  refreshState: () => AppState,
 }
