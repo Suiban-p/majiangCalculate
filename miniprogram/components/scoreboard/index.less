@@ -8,7 +8,7 @@
 
 .scoreboard--fixed {
   position: sticky;
-  top: 0;
+  top: calc(env(safe-area-inset-top) + 96rpx);
   z-index: 20;
   margin-top: 8rpx;
   backdrop-filter: blur(12rpx);

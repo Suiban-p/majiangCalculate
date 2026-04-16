@@ -53,13 +53,14 @@
   - warning / confirm / disabled 文案
   - 血战到底 / 血流成河模式差异说明
 
-## 已知问题
+## 工程环境说明
 - 仓库级 `tsc --noEmit` 仍无法完全通过。
 - 主要原因不是当前业务代码，而是现有微信 typings 不完整，缺失文件包括：
   - `typings/types/wx/lib.wx.canvas.d.ts`
   - `typings/types/wx/lib.wx.wasm.d.ts`
   - `typings/types/wx/lib.wx.xr-frame.d.ts`
 - 在脱离微信开发者工具环境时，`wx` 全局类型也无法被完整识别。
+- 这属于工程环境层面的限制，不是当前 MVP 主流程功能缺陷。
 - 当前验收以微信开发者工具中的可运行性、主流程可走通、核心结算正确为主。
 
 ## 未完成事项
@@ -70,3 +71,19 @@
 - 后续可单独安排工程任务：
   - 补齐微信 typings
   - 恢复完整 TypeScript 校验
+
+## 2026-04-16 UI P0 修复记录
+- 已完成截图巡检后确认的 P0 范围修复：
+  - 修复全局累计记分板 sticky 顶部避让，避免滚动吸顶后与状态栏 / 微信胶囊区重叠。
+  - 修复 `round-entry` 页面底部 safe-area padding，避免底部内容贴近 home indicator。
+  - 修复 `round-confirm` 页面底部 safe-area padding。
+  - 将 `round-confirm` 页面底部确认操作区改为 sticky，使多条结算记录时确认按钮保持可达。
+- 本轮严格未处理的事项：
+  - 未调整文案。
+  - 未调整空态、warning、disabled 状态。
+  - 未调整胡牌表单提示。
+  - 未修改业务逻辑。
+- 涉及文件：
+  - `miniprogram/components/scoreboard/index.less`
+  - `miniprogram/pages/round-entry/index.less`
+  - `miniprogram/pages/round-confirm/index.less`
