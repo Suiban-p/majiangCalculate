@@ -101,3 +101,11 @@
   - `miniprogram/components/scoreboard/index.less`
   - `miniprogram/pages/round-entry/index.less`
   - `miniprogram/pages/round-confirm/index.less`
+
+## 2026-04-17 Final P0 UI 修复记录
+- 已完成第三轮 UI 回归后剩余的最后一个 P0 布局问题修复：
+  - 在 `round-confirm` 的结算记录 section 增加底部滚动占位。
+  - 解决 sticky 底部操作区覆盖最后一条 settlement 的问题。
+  - 保留底部操作区 sticky 行为，未改按钮结构、文案或业务逻辑。
+- 涉及文件：
+  - `miniprogram/pages/round-confirm/index.less`
