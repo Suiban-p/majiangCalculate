@@ -109,3 +109,16 @@
   - 保留底部操作区 sticky 行为，未改按钮结构、文案或业务逻辑。
 - 涉及文件：
   - `miniprogram/pages/round-confirm/index.less`
+
+## 2026-04-17 round-confirm 底部留白细调记录
+- 已完成 Final P0 后的底部留白收紧：
+  - 将 `round-confirm` 页面底部预留从过大的 `180rpx + safe-area` 收紧为 `128rpx + safe-area`。
+  - 将 sticky 底部操作区前间距从 `64rpx` 收紧为 `28rpx`。
+  - 目标是在不重新引入 settlement 遮挡的前提下，减少最后一条记录与底部按钮之间的异常空白。
+- 本轮未修改：
+  - 业务逻辑。
+  - 文案。
+  - 按钮结构。
+  - 其它页面或组件。
+- 涉及文件：
+  - `miniprogram/pages/round-confirm/index.less`
