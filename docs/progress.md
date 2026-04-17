@@ -87,3 +87,17 @@
   - `miniprogram/components/scoreboard/index.less`
   - `miniprogram/pages/round-entry/index.less`
   - `miniprogram/pages/round-confirm/index.less`
+
+## 2026-04-17 UI P0 回归修复记录
+- 已完成第二轮 UI 回归巡检后确认的两个 P0 布局回归修复：
+  - 取消累计记分板的 sticky 吸顶行为，改回正常文档流，避免滚动后覆盖页面内容。
+  - 保留 `round-confirm` 底部确认操作区 sticky，同时增加页面底部滚动占位，避免最后的结算记录被按钮区遮挡。
+  - 微调 `round-entry` 中记分板下方首个内容区间距，保证内容分隔稳定。
+- 本轮严格未处理的事项：
+  - 未修改业务逻辑。
+  - 未调整文案。
+  - 未处理表单密度、记分板高度、空态重复等非本轮 P0 范围问题。
+- 涉及文件：
+  - `miniprogram/components/scoreboard/index.less`
+  - `miniprogram/pages/round-entry/index.less`
+  - `miniprogram/pages/round-confirm/index.less`
